@@ -1,0 +1,37 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <h:head>
+        <title>Cadastro Pedido de Venda</title>
+    </h:head>
+    <h:body>
+        <center>
+            <h:form>
+                Cadastro de Pedido de Venda <br/><br/>
+                <h:panelGrid columns="2">
+                    Código: 
+                    <h:inputText id="codPedidoVenda" disabled="true" value="#{pedidoVendaBEAN.pedidoVenda.codPedidoVenda}"/>
+                    Cliente:  
+                    <h:selectOneMenu id="cliente" value="#{pedidoVendaBEAN.pedidoVenda.cliente}" converter="clienteConverter">
+                        <f:selectItems value="#{clienteBEAN.listarCliente()}" var="clienteLista"
+                                       itemValue="#{clienteLista}" itemLabel="#{clienteLista.nome}"></f:selectItems>
+                    </h:selectOneMenu>
+                    Data: 
+                    <h:inputText id="dtPedido" value="#{pedidoVendaBEAN.pedidoVenda.dtPedido}">
+                        <f:convertDateTime pattern="dd/MM/yyyy"/>
+                    </h:inputText>
+                    Total: 
+                    <h:inputText id="valortotal" value="#{pedidoVendaBEAN.pedidoVenda.valorTotal}"/>
+                        
+                    <h:commandButton value="Confirmar" action="#{pedidovendaBEAN.confirmarPedidoVenda()}"/> <br/><br/>
+                    <h:commandButton value="Voltar" action="consulta_pedidovenda"/> <br/><br/>
+                </h:panelGrid>
+                <br/><br/>
+                FrenteCaixaEPS
+            </h:form>
+        </center>
+    </h:body>
+</html>
+
