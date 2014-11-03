@@ -1,0 +1,54 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <h:head>
+        <title>Consulta de Pedido Venda</title>
+    </h:head>
+    <h:body>
+        <center>
+            <h:form>
+                Pedido de Venda <br/><br/>
+                <h:commandButton value="+ Novo Pedido de Venda" action="#{pedidoVendaBEAN.novoPedidoVenda()}"/> <br/><br/>
+                <h:panelGrid columns="3">
+                    Buscar Pedido Venda:
+                        <h:inputText id="filtro"/>
+                        <h:commandButton value="Buscar"/> <br/>
+                </h:panelGrid>
+                <h:dataTable value="#{pedidoVendaBEAN.listarPedidoVenda()}" var="tabela" border="1">
+                    <h:column>
+                        <f:facet name="header">
+                            Código
+                        </f:facet>
+                        <h:outputText value="#{tabela.codPedidoVenda}"/>
+                    </h:column>
+                     <h:column>
+                        <f:facet name="header">
+                            Data
+                        </f:facet>
+                        <h:outputText value="#{tabela.dtPedido}"/>
+                    </h:column>
+                     <h:column>
+                        <f:facet name="header">
+                            Valor Total
+                        </f:facet>
+                        <h:outputText value="#{tabela.valorTotal}"/>
+                    </h:column>
+                    <h:column>
+                        <f:facet name="header">
+                            Ações
+                        </f:facet>
+                        <h:panelGrid columns="2">
+                            <h:commandButton value="Editar" action="#{pedidoVendaBEAN.carregaPedidoVenda(tabela)}"/>
+                            <h:commandButton value="Remover" action="#{pedidoVendaBEAN.excluirPedidoVenda(tabela)}"/>
+                        </h:panelGrid>
+                    </h:column>
+                </h:dataTable>
+                <br/>
+                FrenteCaixaEPS
+            </h:form>
+        </center>
+    </h:body>
+</html>
+
