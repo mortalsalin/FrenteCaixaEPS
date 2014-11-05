@@ -2,32 +2,43 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:f="http://xmlns.jcp.org/jsf/core">
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:b="http://bootsfaces.net/ui"
+      xmlns:p="http://primefaces.org/ui">
     <h:head>
         <link rel="stylesheet" type="text/css" href="MeuEstilo.css"/>
         <title>Cadastro Cliente</title>
     </h:head>
     <h:body>
-        <center>
-            <h:form>
-                Cadastro de Cliente <br/><br/>
-                <h:panelGrid columns="2">
-                    Código: 
-                    <h:inputText id="codigo" disabled="true" value="#{clienteBEAN.cliente.codPessoa}"/>
-                    Nome: 
-                        <h:inputText id="nome" value="#{clienteBEAN.cliente.nome}"/>
-                    CPF: 
-                        <h:inputText id="CPF" value="#{clienteBEAN.cliente.CPF}"/>
-                    Email: 
-                        <h:inputText id="email" value="#{clienteBEAN.cliente.email}"/>
-                        
-                    <h:commandButton value="Confirmar" action="#{clienteBEAN.confirmarCliente()}"/> <br/><br/>
-                    <h:commandButton value="Voltar" action="consulta_cliente"/> <br/><br/>
-                </h:panelGrid>
-                <br/><br/>
-                FrenteCaixaEPS
-            </h:form>
-        </center>
+        <ui:composition template="layout_padrao.xhtml">  
+            <ui:define name="content">
+                <style>
+                    .input {
+                        width: 100%;
+                    }  
+                </style>
+                <center>
+                    <h:form>
+                        <b:container>
+                        Cadastro de Cliente <br/><br/>
+                        <h:panelGrid columns="2">
+                            Código: 
+                            <h:inputText id="codigo" disabled="true" value="#{clienteBEAN.cliente.codPessoa}"/>
+                            Nome: 
+                                <h:inputText id="nome" value="#{clienteBEAN.cliente.nome}"/>
+                            CPF: 
+                                <h:inputText id="CPF" value="#{clienteBEAN.cliente.CPF}"/>
+                            Email: 
+                                <h:inputText id="email" value="#{clienteBEAN.cliente.email}"/>
+
+                            <h:commandButton value="Confirmar" action="#{clienteBEAN.confirmarCliente()}"/> <br/><br/>
+                            <h:commandButton value="Voltar" action="consulta_cliente"/> <br/><br/>
+                        </h:panelGrid>
+                        </b:container>
+                    </h:form>
+                </center>
+            </ui:define>
+        </ui:composition>
     </h:body>
 </html>
-

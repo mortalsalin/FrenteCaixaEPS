@@ -28,7 +28,7 @@ public class PedidoVendaBEAN {
 
     @Override
     public int hashCode() {
-        int hash = 3;
+        int hash = 5;
         hash = 41 * hash + Objects.hashCode(this.pedidovenda);
         return hash;
     }
@@ -75,8 +75,8 @@ public class PedidoVendaBEAN {
     
     public String novoPedidoVenda(){
         pedidovenda.setCodPedidoVenda(null);
-        pedidovenda.setCliente(null);
-        pedidovenda.setDtPedido(null);
+        //pedidovenda.setCliente(null);
+        //pedidovenda.setDtPedido(null);
         pedidovenda.setValorTotal(0.0f);
         return "cadastro_pedidovenda";
     }
