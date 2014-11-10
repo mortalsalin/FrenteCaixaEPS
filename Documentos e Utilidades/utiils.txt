@@ -1,0 +1,2 @@
+http://en.wikibooks.org/wiki/Java_Persistence/Relationships#Collections
+http://www.linhadecodigo.com.br/artigo/3139/gerenciando-colecoes-com-primefaces.aspx
