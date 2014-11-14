@@ -3,6 +3,7 @@ package frentecaixa.bean;
 import frentecaixa.model.PedidoVenda;
 import frentecaixa.modelDAO.PedidoVendaDAO;
 import frentecaixa.model.ItemVenda;
+import frentecaixa.modelDAO.ItemVendaDAO;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -21,6 +22,7 @@ public class PedidoVendaBEAN {
     private ArrayList<ItemVenda> carrinhoCompras;
     private String mensagem = "";
     private Float valorTotal = 0.f;
+    private ItemVendaDAO itemDAO = new ItemVendaDAO();
     
     @PostConstruct
     private void init() {
@@ -49,6 +51,14 @@ public class PedidoVendaBEAN {
     }
 
     public ArrayList<ItemVenda> getCarrinhoCompras() {
+        if ((listaPedidoVenda.contains(pedidovenda)) & (carrinhoCompras.isEmpty()))
+        {
+            carrinhoCompras.addAll(itemDAO.getList(getPedidovenda()));
+            for (ItemVenda c : carrinhoCompras) {
+                this.setValorTotal((Float) (this.getValorTotal() + c.getVltTotalProduto()));
+            }
+        }
+       
         return carrinhoCompras;
     }
 
@@ -73,8 +83,8 @@ public class PedidoVendaBEAN {
     }
     
     public String inserirPedidoVenda(){
-        pedidovenda.setValorTotal(valorTotal);
         pedidovenda.setItemVenda(carrinhoCompras);
+        pedidovenda.setValorTotal(valorTotal);
         pedidovendaDAO.inserirPedidoVenda(pedidovenda);
         this.limparCampos();
         return "consulta_pedidovenda";
@@ -105,6 +115,7 @@ public class PedidoVendaBEAN {
         getPedidovenda().setCliente(null);
         getPedidovenda().setDtPedido(null);
         getPedidovenda().setValorTotal(0.0f);
+        getPedidovenda().setItemVenda(carrinhoCompras);
         return "cadastro_pedidovenda";
     }
 
@@ -145,7 +156,9 @@ public class PedidoVendaBEAN {
     public String removerCarrinho(ItemVenda itemVenda) {
         System.out.println("Removendo...");
         getCarrinhoCompras().remove(itemVenda);
-        setValorTotal((Float) (getValorTotal() - itemVenda.getVltTotalProduto()));
+        valorTotal = valorTotal - itemVenda.getVltTotalProduto();
+        itemVenda.getProduto().setEstoque(itemVenda.getProduto().getEstoque() + itemVenda.getQuantItemVenda());
+        itemDAO.remover(itemVenda);
         return "cadastro_pedidovenda";
     }
     
