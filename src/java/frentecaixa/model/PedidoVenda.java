@@ -2,7 +2,9 @@ package frentecaixa.model;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 import java.util.Objects;
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -10,9 +12,11 @@ import javax.persistence.Id;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import org.hibernate.validator.constraints.NotEmpty;
 
 
 @Entity
@@ -23,9 +27,15 @@ public class PedidoVenda implements Serializable{
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer CodPedidoVenda;
+    
     @ManyToOne(targetEntity = Cliente.class, fetch = FetchType.EAGER)
     @JoinColumn(name = "CodCliente", nullable = true)
     private Cliente cliente;
+    
+    @NotEmpty
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "venda")
+    private List<ItemVenda> itemVenda;
+    
     @Temporal(TemporalType.DATE)
     private Date dtPedido;
     private Float ValorTotal;
@@ -63,6 +73,14 @@ public class PedidoVenda implements Serializable{
         this.dtPedido = dtPedido;
     }
     
+    public List<ItemVenda> getItemVenda() {
+        return itemVenda;
+    }
+
+    public void setItemVenda(List<ItemVenda> itemVenda) {
+        this.itemVenda = itemVenda;
+    }
+    
     @Override
     public int hashCode() {
         int hash = 9;
@@ -84,7 +102,8 @@ public class PedidoVenda implements Serializable{
         }
         return true;
     }
-
     
+    public PedidoVenda() {
+    }
     
 }

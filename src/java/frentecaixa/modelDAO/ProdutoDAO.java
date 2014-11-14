@@ -6,6 +6,8 @@ import java.util.List;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+import org.hibernate.criterion.Order;
+import org.hibernate.criterion.Restrictions;
 
 public class ProdutoDAO {
 
@@ -58,6 +60,18 @@ public class ProdutoDAO {
             trans.commit();
         } catch( Exception e ){
             e.printStackTrace();
+        } finally {
+            session.close();
+        }
+    }
+    
+    public List<Produto> listar(String s) {
+        session = HibernateUtil.getSessionFactory().openSession();
+        try {
+            Criteria cri = session.createCriteria(Produto.class);
+            cri.addOrder(Order.asc("nome"));
+            cri.add(Restrictions.like("nome", s + "%"));
+            return cri.list();
         } finally {
             session.close();
         }

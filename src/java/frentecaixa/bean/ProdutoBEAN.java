@@ -2,6 +2,7 @@ package frentecaixa.bean;
 
 import frentecaixa.model.Produto;
 import frentecaixa.modelDAO.ProdutoDAO;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import javax.faces.bean.ManagedBean;
@@ -86,5 +87,13 @@ public class ProdutoBEAN {
             return editarProduto();
         }
         return inserirProduto();
+    }
+    
+    public List<Produto> listar(String s) {
+        List<Produto> results = new ArrayList<>();
+        for (Produto p : new ProdutoDAO().listar(s)) {
+            results.add(p);
+        }
+        return results;
     }
 }

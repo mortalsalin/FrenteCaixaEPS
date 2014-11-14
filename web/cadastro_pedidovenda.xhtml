@@ -17,31 +17,99 @@
                         width: 100%;
                     }  
                 </style>
-                <center>
-                <h:form>
-                    <b:container>
-                        Cadastro de Pedido <br/><br/>
-                        <p:panelGrid columns="2">
-                            Código: 
-                            <p:inputText id="codigo" disabled="true" value="#{pedidoVendaBEAN.pedidoVenda.codPedidoVenda}"/>
-                            Cliente:  
-                            <p:selectOneMenu id="cliente" value="#{pedidoVendaBEAN.pedidoVenda.cliente}" converter="clienteConverter">
+            <center>
+            <b:container>
+            <p:panel id="conteudo">
+                <p:growl>
+                    <p:outputLabel style="color: red" value="#{pedidoVendaBEAN.mensagem}"></p:outputLabel>
+                    <h:form id="formVenda">
+                        <p:panelGrid columns="2" id="cadastro">
+
+                            <f:facet name="header">Cadastro de Venda</f:facet>
+                            <p:outputLabel value="ID:"></p:outputLabel>
+                            <p:outputLabel value="#{pedidoVendaBEAN.pedidovenda.codPedidoVenda}"></p:outputLabel>
+
+                            <p:outputLabel value="Data Venda:"></p:outputLabel>
+                            <p:calendar value="#{pedidoVendaBEAN.pedidovenda.dtPedido}"></p:calendar>
+
+                            <p:outputLabel value="Cliente"></p:outputLabel>
+                            <p:selectOneMenu id="cliente" value="#{pedidoVendaBEAN.pedidovenda.cliente}" converter="produtoConverter">
                                 <f:selectItems value="#{clienteBEAN.listarCliente()}" var="clienteLista"
                                                itemValue="#{clienteLista}" itemLabel="#{clienteLista.nome}"></f:selectItems>
                             </p:selectOneMenu>
-                            Data: 
-                            <p:inputText id="dtPedido" value="#{pedidoVendaBEAN.pedidoVenda.dtPedido}">
-                                <f:convertDateTime pattern="dd/MM/yyyy"/>
-                            </p:inputText>
-                            Valor Total: 
-                            <p:inputText id="nome" value="#{pedidoVendaBEAN.pedidoVenda.valorTotal}"/>
+                            
+                            <p:outputLabel value="Produto"></p:outputLabel>
+                            <p:panel>
+                                <p:selectOneMenu id="produto" value="#{pedidoVendaBEAN.itemVenda.produto}" converter="produtoConverter">
+                                    <f:selectItems value="#{produtoBEAN.listarProduto()}" var="produtoLista"
+                                               itemValue="#{produtoLista}" itemLabel="#{produtoLista.nome}"></f:selectItems>
+                                </p:selectOneMenu>
+                                
+                                <br></br>
+                                <p:outputLabel value="Quantidade:"></p:outputLabel>
+                                <br></br>
+                                <p:inputText requiredMessage="É necessário selecionar uma quantidade" value="#{pedidoVendaBEAN.itemVenda.quantItemVenda}"></p:inputText>
+                                <br></br>
 
-                            <p:commandButton value="Confirmar" action="#{pedidoVendaBEAN.confirmarPedidoVenda()}"/> <br/><br/>
-                            <p:commandButton value="Voltar" action="consulta_pedidovenda"/> <br/><br/>
+                                <p:commandButton value="Adicionar" action="#{pedidoVendaBEAN.adicionarAoCarrinho}" ajax="false"></p:commandButton>
+                            </p:panel>
+
+                            <p:commandButton value="Limpar" action="#{pedidoVendaBEAN.limparCampos}" ajax="false"></p:commandButton>
+
+
                         </p:panelGrid>
-                    </b:container>
-                </h:form>
-                </center>
+                    </h:form>
+
+                </p:growl>
+            
+              <p:panel id="carrinhoCompra">
+              <h:form>  
+                <p:dataTable value="#{pedidoVendaBEAN.getCarrinhoCompras()}"  var="carrinho">
+                    <f:facet name="header">Carrinho de Compras</f:facet>
+
+                    <p:column>
+                        <f:facet name="header">
+                            Produto:
+                        </f:facet>
+                        <p:outputLabel value="#{carrinho.produto.nome}"></p:outputLabel>
+                    </p:column>
+                    <p:column>
+                        <f:facet name="header">
+                            Valor Unitário:
+                        </f:facet>
+                        <p:outputLabel value="#{carrinho.produto.preco}"></p:outputLabel>
+                    </p:column>
+                    <p:column>
+                        <f:facet name="header">
+                            Produto:
+                        </f:facet>
+                        <p:outputLabel value="#{carrinho.quantItemVenda}"></p:outputLabel>
+                    </p:column>
+                    <p:column>
+                        <f:facet name="header">
+                            Valor:
+                        </f:facet>
+                        <p:outputLabel value="#{carrinho.vltTotalProduto}"></p:outputLabel>
+                    </p:column>
+                    <p:column>
+                        <f:facet name="header">
+                            Ações:
+                        </f:facet>
+                        <p:commandButton value="Remover do carrinho" action="#{pedidoVendaBEAN.removerCarrinho(carrinho)}" update=":carrinhoCompra"></p:commandButton>
+                    </p:column>
+                </p:dataTable>
+                <p:outputLabel value="Valor Total do Carrinho: #{pedidoVendaBEAN.valorTotal}"></p:outputLabel>
+            </h:form>
+            </p:panel>
+            
+            <h:form>
+                <p:commandButton value="Finalizar Venda" ajax="false" action="#{pedidoVendaBEAN.confirmarPedidoVenda()}"></p:commandButton> 
+                <p:commandButton value="Voltar" action="consulta_pedidovenda"></p:commandButton> 
+            </h:form>  
+            
+            </p:panel>
+            </b:container>
+            </center>
             </ui:define>
         </ui:composition>
     </h:body>

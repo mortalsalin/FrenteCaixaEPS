@@ -14,5 +14,6 @@
     <mapping class="frentecaixa.model.Produto"/>
     <mapping class="frentecaixa.model.PedidoVenda"/>
     <mapping class="frentecaixa.model.PedidoCompra"/>
+    <mapping class="frentecaixa.model.ItemVenda"/>
   </session-factory>
 </hibernate-configuration>
