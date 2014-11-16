@@ -1,0 +1,61 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:b="http://bootsfaces.net/ui"
+      xmlns:p="http://primefaces.org/ui">
+    <h:head>
+        <title>Consulta de Cotação</title>
+    </h:head>
+    <h:body>
+        <ui:composition template="layout_padrao.xhtml">  
+            <ui:define name="content">
+                <style>
+                    .input {
+                        width: 100%;
+                    }  
+                </style>
+                <center>
+                    <h:form>
+                        <b:container>
+                        <p:toolbar>
+                            <f:facet name="right">
+                                <p:commandButton icon="ui-icon-document" value="Nova Cotação " action="#{cotacaoBEAN.novoCotacao()}"/>
+                            </f:facet>
+                        </p:toolbar>
+                        <p:dataTable 
+                            id="grid" 
+                            value="#{cotacaoBEAN.listarCotacao()}" 
+                            var="tabela"
+                            rows="10"
+                            paginator="true"
+                            paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                            paginatorPosition="bottom"
+                            rowsPerPageTemplate="5,10,15"
+                        >
+                           
+                            <p:column headerText="Código" filterBy="#{tabela.codCotacao}" filterMatchMode="exact">
+                                <h:outputText value="#{tabela.codCotacao}"/>
+                            </p:column>
+                            
+                            <p:column headerText="Data Cotação" filterBy="#{tabela.dtCotacao}" filterMatchMode="exact">
+                                <h:outputText value="#{tabela.dtCotacao}"/>
+                            </p:column>
+      
+                            <p:column headerText="Ações">
+                                <center>
+                                <p:commandButton value="Editar" action="#{cotacaoBEAN.carregaCotacao(tabela)}" process="@this" update="grid"/>
+                                <p:commandButton value="Excluir" action="#{cotacaoBEAN.excluirCotacao(tabela)}" process="@this" update="grid"/>    
+                                </center>
+                            </p:column>
+                        </p:dataTable>
+                        </b:container>
+                    </h:form>
+                </center>
+            </ui:define>
+        </ui:composition>
+    </h:body>
+</html>
+

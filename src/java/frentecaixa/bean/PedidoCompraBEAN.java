@@ -132,16 +132,22 @@ public class PedidoCompraBEAN {
     
     public String adicionarAoCarrinho() {
         setMensagem("");
-       
         if (getItemCompra().getProduto() == null || getItemCompra().getQuantItemCompra() == null) {
             setMensagem("Todos os campos precisam ser preenchidos");
-        } else {
-            this.getItemCompra().setVltTotalProduto(getItemCompra().getQuantItemCompra() * getItemCompra().getProduto().getPreco());
-            this.getItemCompra().setCompra(getPedidoCompra());
+        } else 
+        {
+            ItemCompraDAO itemDAO = new ItemCompraDAO();
+            Float precoCompra = getItemCompra().getProduto().getPreco();
+            /*Float precoCotacao = itemDAO.retornaPrecoCotacao(itemCompra, pedidocompra.getFornecedor());
             
+            if (precoCotacao < precoCompra){
+               precoCompra = precoCotacao; 
+            }*/
+            
+            this.getItemCompra().setVltTotalProduto(getItemCompra().getQuantItemCompra() * precoCompra);
+            this.getItemCompra().setCompra(getPedidoCompra());
             this.getCarrinhoCompras().add(getItemCompra());
             this.setValorTotal((Float) (this.getValorTotal() + getItemCompra().getVltTotalProduto()));
-            ItemCompraDAO itemDAO = new ItemCompraDAO();
             itemDAO.AtualizaEstoqueItens(getItemCompra(), "aumentar");
             
         }

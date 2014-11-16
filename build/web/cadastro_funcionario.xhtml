@@ -28,21 +28,16 @@
                             <p:inputText id="nome" value="#{funcionarioBEAN.funcionario.nome}"/>
                             Tipo: 
                             <h:selectOneMenu 
-                                required="true" 
+                                required="true"
                                 requiredMessage="Informe o tipo de funcionário" 
-                                id="Tipo:" 
+                                id="tipo" 
                                 value="#{funcionarioBEAN.funcionario.tipo}"
                             >
                                 <f:selectItem itemValue="Gestor"/>
                                 <f:selectItem itemValue="Vendedor"/>
                             </h:selectOneMenu>
                             Salário: 
-                            <p:inputText 
-                                required="true" 
-                                requiredMessage="Informe o Salário" 
-                                id="salario" 
-                                value="#{funcionarioBEAN.funcionario.salarioFuncionario}"
-                            />
+                            <p:inputText id="salario" value="#{funcionarioBEAN.funcionario.salarioFuncionario}"/>
                             Login: 
                             <p:inputText 
                                 required="true" 
@@ -51,13 +46,16 @@
                                 value="#{funcionarioBEAN.funcionario.loginFuncionario}"
                              />
                             Senha: 
-                            <p:inputText 
+                            <p:password
                                 required="true" 
                                 maxlength="10"
                                 requiredMessage="Informe o login"
-                                id="login" 
+                                id="senha" 
                                 value="#{funcionarioBEAN.funcionario.senhaFuncionario}"
                              />
+                            Email:
+                            <p:inputText id="email" value="#{funcionarioBEAN.funcionario.email}"/>
+                            
                             <p:commandButton value="Confirmar" action="#{funcionarioBEAN.confirmarFuncionario()}"/> <br/><br/>
                             <p:commandButton value="Voltar" action="consulta_funcionario"/> <br/><br/>
                         </p:panelGrid>

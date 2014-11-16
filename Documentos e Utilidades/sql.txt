@@ -1,0 +1,6 @@
+SELECT 
+	MIN(vlrFornecedor) as vlrFornecedor
+from itemcotacao
+join cotacao on cotacao.CodCotacao = itemcotacao.cotacao_CodCotacao
+where cotacao.CodProduto = 1
+  and itemcotacao.fornecedor_CodFornecedor = 4

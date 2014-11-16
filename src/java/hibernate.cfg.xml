@@ -8,10 +8,6 @@
     <property name="hibernate.connection.username">root</property>
     <property name="hibernate.connection.password">sysdba</property>
     <property name="hibernate.hbm2ddl.auto">update</property>
-    <property name="hibernate.show_sql">true</property>
-    <property name="hibernate.c3p0.timeout">1800</property>
-    <property name="hibernate.c3p0.max_statements">50</property>
-    <property name="hibernate.generate_statistics">true</property>
     <mapping class="frentecaixa.model.Cliente"/>
     <mapping class="frentecaixa.model.Fornecedor"/>
     <mapping class="frentecaixa.model.Pessoa"/>
@@ -21,5 +17,7 @@
     <mapping class="frentecaixa.model.ItemVenda"/>
     <mapping class="frentecaixa.model.ItemCompra"/>
     <mapping class="frentecaixa.model.Funcionario"/>
+    <mapping class="frentecaixa.model.Cotacao"/>
+    <mapping class="frentecaixa.model.ItemCotacao"/>
   </session-factory>
 </hibernate-configuration>

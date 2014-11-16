@@ -1,10 +1,12 @@
 package frentecaixa.modelDAO;
 
 import frentecaixa.hibernate.HibernateUtil;
+import frentecaixa.model.Fornecedor;
 import frentecaixa.model.ItemCompra;
 import frentecaixa.model.PedidoCompra;
 import java.util.List;
 import org.hibernate.Criteria;
+import org.hibernate.Query;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
@@ -51,5 +53,24 @@ public class ItemCompraDAO {
         prodDAO.editarProduto(item.getProduto());
 
     }
+    
+    public Float retornaPrecoCotacao(ItemCompra item, Fornecedor fornecedor) 
+    {
+        sessao = HibernateUtil.getSessionFactory().openSession();
+        String hql =
+            "SELECT "+
+            "	MIN(vlrFornecedor) as vlrFornecedor "+
+            "FROM itemCotacao "+
+            "JOIN Cotacao ON Cotacao.CodCotacao = ItemCotacao.CodCotacao "+
+            "WHERE Cotacao.codProduto = :codProduto "+
+            "  AND ItemCotacao.CodFornecedor = :codFornecedor ";
+        
+        Query query = sessao.createQuery(hql);
+        query.setParameter("codProduto",item.getProduto().getCodProduto());
+        query.setParameter("codFornecedor",fornecedor.getCodPessoa());
+        
+        return query.getFirstResult().floatValue();
+     }
+    
     
 }
