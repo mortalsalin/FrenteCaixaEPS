@@ -17,36 +17,99 @@
                         width: 100%;
                     }  
                 </style>
-                <center>
-                <h:form>
-                    <b:container>
-                        Cadastro de Pedido Compra <br/><br/>
-                        <p:panelGrid columns="2">
-                            Código: 
-                            <p:inputText id="codigo" disabled="true" value="#{pedidoCompraBEAN.pedidoCompra.codPedidoCompra}"/>
-                            Fornecedor:  
-                            <p:selectOneMenu id="fornecedor" value="#{pedidoCompraBEAN.pedidoCompra.fornecedor}" converter="fornecedorConverter">
+            <center>
+            <b:container>
+            <p:panel id="conteudo">
+                <p:growl>
+                    <p:outputLabel style="color: red" value="#{pedidoCompraBEAN.mensagem}"></p:outputLabel>
+                    <h:form id="formCompra">
+                        <p:panelGrid columns="2" id="cadastro">
+
+                            <f:facet name="header">Cadastro de Compra</f:facet>
+                            <p:outputLabel value="Código:"></p:outputLabel>
+                            <p:outputLabel value="#{pedidoCompraBEAN.pedidoCompra.codPedidoCompra}"></p:outputLabel>
+
+                            <p:outputLabel value="Data Compra:"></p:outputLabel>
+                            <p:calendar value="#{pedidoCompraBEAN.pedidoCompra.dtPedido}"></p:calendar>
+
+                            <p:outputLabel value="Fornecedor:"></p:outputLabel>
+                            <p:selectOneMenu requiredMessage="É necessário selecionar um fornecedor" id="fornecedor" value="#{pedidoCompraBEAN.pedidoCompra.fornecedor}" converter="fornecedorConverter">
                                 <f:selectItems value="#{fornecedorBEAN.listarFornecedor()}" var="fornecedorLista"
                                                itemValue="#{fornecedorLista}" itemLabel="#{fornecedorLista.nome}"></f:selectItems>
                             </p:selectOneMenu>
-                            Status:
-                            <h:selectOneMenu id="status" value="#{pedidoCompraBEAN.pedidoCompra.status}">
-                                <f:selectItem itemValue="ABERTO"/>
-                                <f:selectItem itemValue="CONCLUIDO"/>
-                            </h:selectOneMenu>
-                            Data: 
-                            <p:inputText id="dtPedido" value="#{pedidoCompraBEAN.pedidoCompra.dtPedido}">
-                                <f:convertDateTime pattern="dd/MM/yyyy"/>
-                            </p:inputText>
-                            Valor Total: 
-                            <p:inputText id="nome" value="#{pedidoCompraBEAN.pedidoCompra.valorTotal}"/>
+                            
+                            <p:outputLabel value="Produto"></p:outputLabel>
+                            <p:panel>
+                                <p:selectOneMenu id="produto" value="#{pedidoCompraBEAN.itemCompra.produto}" converter="produtoConverter">
+                                    <f:selectItems value="#{produtoBEAN.listarProduto()}" var="produtoLista"
+                                               itemValue="#{produtoLista}" itemLabel="#{produtoLista.nome}"></f:selectItems>
+                                </p:selectOneMenu>
+                                
+                                <br></br>
+                                <p:outputLabel value="Quantidade:"></p:outputLabel>
+                                <br></br>
+                                <p:inputText requiredMessage="É necessário selecionar uma quantidade" value="#{pedidoCompraBEAN.itemCompra.quantItemCompra}"></p:inputText>
+                                <br></br>
 
-                            <p:commandButton value="Confirmar" action="#{pedidoCompraBEAN.confirmarPedidoCompra()}"/> <br/><br/>
-                            <p:commandButton value="Voltar" action="consulta_pedidocompra"/> <br/><br/>
+                                <p:commandButton value="Adicionar" action="#{pedidoCompraBEAN.adicionarAoCarrinho}" ajax="false"></p:commandButton>
+                            </p:panel>
+
+                            <p:commandButton value="Limpar" action="#{pedidoCompraBEAN.limparCampos}" ajax="false"></p:commandButton>
+
+
                         </p:panelGrid>
-                    </b:container>
-                </h:form>
-                </center>
+                    </h:form>
+
+                </p:growl>
+            
+              <p:panel id="carrinhoCompra">
+              <h:form>  
+                <p:dataTable value="#{pedidoCompraBEAN.getCarrinhoCompras()}"  var="carrinho">
+                    <f:facet name="header">Itens do Pedido</f:facet>
+
+                    <p:column>
+                        <f:facet name="header">
+                            Produto:
+                        </f:facet>
+                        <p:outputLabel value="#{carrinho.produto.nome}"></p:outputLabel>
+                    </p:column>
+                    <p:column>
+                        <f:facet name="header">
+                            Valor Unitário:
+                        </f:facet>
+                        <p:outputLabel value="#{carrinho.produto.preco}"></p:outputLabel>
+                    </p:column>
+                    <p:column>
+                        <f:facet name="header">
+                            Quantidade:
+                        </f:facet>
+                        <p:outputLabel value="#{carrinho.quantItemCompra}"></p:outputLabel>
+                    </p:column>
+                    <p:column>
+                        <f:facet name="header">
+                            Valor Total:
+                        </f:facet>
+                        <p:outputLabel value="#{carrinho.vltTotalProduto}"></p:outputLabel>
+                    </p:column>
+                    <p:column>
+                        <f:facet name="header">
+                            Ações:
+                        </f:facet>
+                        <p:commandButton value="Remover Item" action="#{pedidoCompraBEAN.removerCarrinho(carrinho)}" update=":carrinhoCompra"></p:commandButton>
+                    </p:column>
+                </p:dataTable>
+                <p:outputLabel value="Total do Pedido: #{pedidoCompraBEAN.valorTotal}"></p:outputLabel>
+            </h:form>
+            </p:panel>
+            
+            <h:form>
+                <p:commandButton value="Finalizar Compra" ajax="false" action="#{pedidoCompraBEAN.confirmarPedidoCompra()}"></p:commandButton> 
+                <p:commandButton value="Voltar" action="consulta_pedidocompra"></p:commandButton> 
+            </h:form>  
+            
+            </p:panel>
+            </b:container>
+            </center>
             </ui:define>
         </ui:composition>
     </h:body>

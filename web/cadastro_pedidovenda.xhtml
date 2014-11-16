@@ -33,7 +33,7 @@
                             <p:calendar value="#{pedidoVendaBEAN.pedidovenda.dtPedido}"></p:calendar>
 
                             <p:outputLabel value="Cliente"></p:outputLabel>
-                            <p:selectOneMenu id="cliente" value="#{pedidoVendaBEAN.pedidovenda.cliente}" converter="produtoConverter">
+                            <p:selectOneMenu requiredMessage="É necessário selecionar um cliente" id="cliente" value="#{pedidoVendaBEAN.pedidovenda.cliente}" converter="produtoConverter">
                                 <f:selectItems value="#{clienteBEAN.listarCliente()}" var="clienteLista"
                                                itemValue="#{clienteLista}" itemLabel="#{clienteLista.nome}"></f:selectItems>
                             </p:selectOneMenu>
@@ -65,7 +65,7 @@
               <p:panel id="carrinhoCompra">
               <h:form>  
                 <p:dataTable value="#{pedidoVendaBEAN.getCarrinhoCompras()}"  var="carrinho">
-                    <f:facet name="header">Carrinho de Compras</f:facet>
+                    <f:facet name="header">Itens do Pedido</f:facet>
 
                     <p:column>
                         <f:facet name="header">
@@ -81,13 +81,13 @@
                     </p:column>
                     <p:column>
                         <f:facet name="header">
-                            Produto:
+                            Quantidade:
                         </f:facet>
                         <p:outputLabel value="#{carrinho.quantItemVenda}"></p:outputLabel>
                     </p:column>
                     <p:column>
                         <f:facet name="header">
-                            Valor:
+                            Valor Total:
                         </f:facet>
                         <p:outputLabel value="#{carrinho.vltTotalProduto}"></p:outputLabel>
                     </p:column>
@@ -95,10 +95,10 @@
                         <f:facet name="header">
                             Ações:
                         </f:facet>
-                        <p:commandButton value="Remover do carrinho" action="#{pedidoVendaBEAN.removerCarrinho(carrinho)}" update=":carrinhoCompra"></p:commandButton>
+                        <p:commandButton value="Remover Item" action="#{pedidoVendaBEAN.removerCarrinho(carrinho)}" update=":carrinhoCompra"></p:commandButton>
                     </p:column>
                 </p:dataTable>
-                <p:outputLabel value="Valor Total do Carrinho: #{pedidoVendaBEAN.valorTotal}"></p:outputLabel>
+                <p:outputLabel value="Total do Pedido: #{pedidoVendaBEAN.valorTotal}"></p:outputLabel>
             </h:form>
             </p:panel>
             

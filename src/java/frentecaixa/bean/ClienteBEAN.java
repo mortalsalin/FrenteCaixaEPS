@@ -90,23 +90,4 @@ public class ClienteBEAN {
         return inserirCliente();
     }
     
-    public List<SelectItem> getClientes(){  
-        ClienteDAO clienteservice = new ClienteDAO();
-        List<Cliente> clientes = clienteservice.getLista();
-        List<SelectItem> itens = new ArrayList<SelectItem>(clientes.size());
-           
-        for(Cliente clienteEach: clientes)
-        {
-            SelectItem si = new SelectItem();  
-                si.setLabel(clienteEach.getNome());  
-                si.setValue(clienteEach.getCodPessoa());  
-            
-            itens.add(si);
-        }
-       
-        return itens;
-    }  
-    
-
-    
 }

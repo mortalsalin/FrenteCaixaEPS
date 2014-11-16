@@ -63,7 +63,4 @@ public class ClienteDAO {
         }
     }
     
-    public Cliente pesquisaByCodPessoa(Integer codPessoa) {
-		return (Cliente) session.load(Cliente.class, codPessoa);
-	}
 }

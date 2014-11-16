@@ -89,19 +89,5 @@ public class FornecedorBEAN {
         }
         return inserirFornecedor();
     }
-    
-    public List<SelectItem> getFornecedores()
-    {
-        FornecedorDAO fornecedorservice = new FornecedorDAO();
-        List<Fornecedor> fornecedores = fornecedorservice.getLista();
-        List<SelectItem> itens = new ArrayList<SelectItem>(fornecedores.size());
-        
-        for(Fornecedor f: fornecedores)
-        {
-            itens.add(new SelectItem(f.getCodPessoa(),f.getNome()));
-        }
-       
-        return itens;
-    }
-    
+
 }
