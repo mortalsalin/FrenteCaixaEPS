@@ -1,0 +1,1 @@
+python C:\Python27\svgconvert.py C:\Users\Geral\Desktop\diagrama\DiagramClasse.svg
