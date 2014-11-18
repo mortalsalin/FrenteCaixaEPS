@@ -156,9 +156,12 @@ public class PedidoVendaBEAN {
         itemDAO.AtualizaEstoqueItens(itemVenda, "aumentar");
         carrinhoCompras.remove(itemVenda);
         
-        List<ItemVenda> itensVenda = itemDAO.getList(pedidovenda);
-        if (itensVenda.contains(itemVenda)){
-            itemDAO.remover(itemVenda);
+        if (listaPedidoVenda.contains(pedidovenda))
+        {
+            List<ItemVenda> itensVenda = itemDAO.getList(pedidovenda);
+            if (itensVenda.contains(itemVenda)){
+                itemDAO.remover(itemVenda);
+            }
         }
         return "cadastro_pedidovenda";
     }

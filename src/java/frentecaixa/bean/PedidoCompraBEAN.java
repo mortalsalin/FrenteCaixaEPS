@@ -8,6 +8,7 @@ import frentecaixa.model.PedidoCompra;
 import frentecaixa.modelDAO.ItemCompraDAO;
 import frentecaixa.modelDAO.ItemCompraDAO;
 import frentecaixa.modelDAO.PedidoCompraDAO;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -130,21 +131,15 @@ public class PedidoCompraBEAN {
         return inserirPedidoCompra();
     }
     
-    public String adicionarAoCarrinho() {
+    public String adicionarAoCarrinho() throws SQLException {
         setMensagem("");
         if (getItemCompra().getProduto() == null || getItemCompra().getQuantItemCompra() == null) {
             setMensagem("Todos os campos precisam ser preenchidos");
         } else 
         {
             ItemCompraDAO itemDAO = new ItemCompraDAO();
-            Float precoCompra = getItemCompra().getProduto().getPreco();
-            /*Float precoCotacao = itemDAO.retornaPrecoCotacao(itemCompra, pedidocompra.getFornecedor());
-            
-            if (precoCotacao < precoCompra){
-               precoCompra = precoCotacao; 
-            }*/
-            
-            this.getItemCompra().setVltTotalProduto(getItemCompra().getQuantItemCompra() * precoCompra);
+            itemDAO.setaPrecoCotacao(itemCompra, pedidocompra.getFornecedor());
+            this.getItemCompra().setVltTotalProduto(getItemCompra().getQuantItemCompra() * getItemCompra().getProduto().getPreco());
             this.getItemCompra().setCompra(getPedidoCompra());
             this.getCarrinhoCompras().add(getItemCompra());
             this.setValorTotal((Float) (this.getValorTotal() + getItemCompra().getVltTotalProduto()));
@@ -162,9 +157,12 @@ public class PedidoCompraBEAN {
         itemDAO.AtualizaEstoqueItens(itemCompra, "diminuir");
         carrinhoCompras.remove(itemCompra);
         
-        List<ItemCompra> itensCompra = itemDAO.getList(pedidocompra);
-        if (itensCompra.contains(itemCompra)){
-            itemDAO.remover(itemCompra);
+        if (listaPedidoCompra.contains(pedidocompra))
+        {
+            List<ItemCompra> itensCompra = itemDAO.getList(pedidocompra);
+            if (itensCompra.contains(itemCompra)){
+                itemDAO.remover(itemCompra);
+            }
         }
         return "cadastro_pedidocompra";
     }

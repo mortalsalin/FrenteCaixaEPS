@@ -147,9 +147,12 @@ public class CotacaoBEAN {
         ItemCotacaoDAO itemDAO = new ItemCotacaoDAO();
         carrinhoCompras.remove(itemCotacao);
         
-        List<ItemCotacao> itensCotacao = itemDAO.getList(cotacao);
-        if (itensCotacao.contains(itemCotacao)){
-            itemDAO.remover(itemCotacao);
+        if (listaCotacao.contains(cotacao))
+        {
+            List<ItemCotacao> itensCotacao = itemDAO.getList(cotacao);
+            if (itensCotacao.contains(itemCotacao)){
+                itemDAO.remover(itemCotacao);
+            }
         }
         return "cadastro_cotacao";
     }

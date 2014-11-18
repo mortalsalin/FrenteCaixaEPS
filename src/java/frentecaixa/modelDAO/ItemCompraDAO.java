@@ -4,13 +4,19 @@ import frentecaixa.hibernate.HibernateUtil;
 import frentecaixa.model.Fornecedor;
 import frentecaixa.model.ItemCompra;
 import frentecaixa.model.PedidoCompra;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.List;
 import org.hibernate.Criteria;
-import org.hibernate.Query;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.criterion.Restrictions;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+
 
 public class ItemCompraDAO {
 
@@ -54,22 +60,42 @@ public class ItemCompraDAO {
 
     }
     
-    public Float retornaPrecoCotacao(ItemCompra item, Fornecedor fornecedor) 
+    public void setaPrecoCotacao(ItemCompra item, Fornecedor fornecedor) throws SQLException 
     {
-        sessao = HibernateUtil.getSessionFactory().openSession();
-        String hql =
+        Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/frentecaixa?zeroDateTimeBehavior=convertToNull","root","sysdba");;
+        String SQL =
             "SELECT "+
-            "	MIN(vlrFornecedor) as vlrFornecedor "+
-            "FROM itemCotacao "+
-            "JOIN Cotacao ON Cotacao.CodCotacao = ItemCotacao.CodCotacao "+
-            "WHERE Cotacao.codProduto = :codProduto "+
-            "  AND ItemCotacao.CodFornecedor = :codFornecedor ";
+            "	MIN(ItemCotacao.vlrFornecedor) as vlrFornecedor "+
+            "FROM ItemCotacao, Cotacao "+
+            "WHERE Cotacao.CodCotacao = ItemCotacao.cotacao_CodCotacao "+
+            "  AND Cotacao.codProduto = '"+item.getProduto().getCodProduto().toString()+"'"+
+            "  AND ItemCotacao.fornecedor_CodFornecedor = '"+fornecedor.getCodPessoa().toString()+"'";
         
-        Query query = sessao.createQuery(hql);
-        query.setParameter("codProduto",item.getProduto().getCodProduto());
-        query.setParameter("codFornecedor",fornecedor.getCodPessoa());
+        try
+        {
+            PreparedStatement stm = con.prepareStatement(SQL);
+            ResultSet rs = stm.executeQuery(SQL);
+
+            Float precoCompra = 0.f;
+            if ( rs != null && rs.next())
+            {  
+                precoCompra = rs.getFloat("vlrFornecedor");
+            }
+
+            if ((precoCompra > 0.f) && (precoCompra < item.getProduto().getPreco()))
+            {
+                /*Se existir cotação para o produto inserido e para o fornecedor selecionado, 
+                 Atualiza o preço do produto para o menor preço cotado*/
+                item.getProduto().setPreco(precoCompra);
+            }
+        } catch (Exception e){
+            e.printStackTrace();
+        } finally {
+           con.close(); 
+        }
         
-        return query.getFirstResult().floatValue();
+        
+     
      }
     
     
